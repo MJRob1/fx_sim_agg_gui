@@ -26,7 +26,7 @@ Configuration of the different liquidity providers is via an input config file:
 
 ![FIX.log](resources/FIX.log.png)
 
-The aggregated FX book is updated and rendered to the screen in a real-time GUi and also displayed in real-time as a ladder in the terminal window as shown below:
+The aggregated FX book is updated and rendered to the screen in a real-time GUI and also displayed in real-time as a ladder in the terminal window as shown below:
 
 ![FX_ladder](resources/FX_ladder.png)
 
