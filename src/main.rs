@@ -10,6 +10,7 @@
 use std::process::exit;
 //use log::{debug, error, info, trace, warn};
 use egui::Vec2;
+use fx_sim_agg_gui::FxViewerApp;
 use log::error;
 
 fn main() {
@@ -20,9 +21,10 @@ fn main() {
     }
 
     // let win_option = eframe::NativeOptions::default();
-    let mut fx_viewer_app = fx_sim_agg_gui::FxViewerApp::default();
+    let mut fx_viewer_app = FxViewerApp::default();
     let win_option = eframe::NativeOptions {
-        viewport: egui::ViewportBuilder::default().with_inner_size(Vec2::new(510., 450.)),
+        // viewport: egui::ViewportBuilder::default().with_inner_size(Vec2::new(510., 450.)),
+        viewport: egui::ViewportBuilder::default().with_inner_size(Vec2::new(590., 350.)),
         ..Default::default()
     };
     if let Err(e) = eframe::run_native(

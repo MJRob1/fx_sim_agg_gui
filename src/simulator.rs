@@ -1,6 +1,6 @@
 use core::f64;
 //use log::{debug, error, info, trace, warn};
-use log::error;
+use log::{error, info};
 use std::fs;
 use std::path::Path;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
@@ -131,6 +131,9 @@ pub fn get_marketdata(config: &Config) -> impl Stream<Item = String> {
                 break;
             };
         }
+
+        // number of iterations done so exit the program
+        info!("{} stream completed", liquidity_provider);
     });
 
     UnboundedReceiverStream::new(rx)
