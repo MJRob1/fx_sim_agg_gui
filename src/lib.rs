@@ -82,7 +82,6 @@ pub fn run<F: Future>(future: F) -> F::Output {
 #[derive(Default, Debug)]
 pub struct FxViewerApp {
     pub fx_book_mutex: Arc<Mutex<aggregator::FxBook>>,
-    // pub fx_book: FxBook,
 }
 
 impl FxViewerApp {
@@ -112,41 +111,7 @@ impl FxViewerApp {
         thread::spawn(move || {
             // start fx thread
             let rec_ctx: Context = ctx_rx.recv().unwrap();
-
             run_async_fx_sim_agg(rec_ctx, writer, fx_book_mutex_fx_clone, &configs);
-            /*
-            run(async {
-                /*  async returns a future rather than blocking current thread
-                run() starts a runtime and hands the future to the runtime all the code - the entire program
-                is the signature future argument of run! Note: everything inside the async code avoids blocking
-                but any code outside run will block on the run function returning */
-
-                // Combine all individual market data streams from each liquidity provider into a single merged stream
-                // that yields values in the order they arrive from the source market data streams
-                let mut merged_streams_map = simulator::start_streams(&configs);
-
-                while let Some(val) = merged_streams_map.next().await {
-                    // await polls the future until future returns Ready.
-                    // If future still pending then control is handed to the runtime
-                    let (_key, market_data) = val;
-
-                    // write market data to a "FIX" log
-                    if let Err(e) = write_to_fix_log(&mut writer, &market_data) {
-                        error!("problem writing to FIX log - {e}");
-                    }
-
-                    // Update the Fx Book with the new market data
-                    let mut fx_book = fx_book_mutex_fx_clone.lock().unwrap();
-                    if let Err(e) = fx_book.update(market_data) {
-                        error!("market data not processed - {e}");
-                    } else {
-                        // currently working on real-time GUI rather than print!!
-                        aggregator::print_fxbook_as_ladder(&mut fx_book);
-                    }
-                    // update GUI
-                    rec_ctx.request_repaint();
-                }
-            });  */
         }); // end of fx thread  - mutex lock released here
 
         if let Err(e) = ctx_tx.send(ctx) {
@@ -196,13 +161,14 @@ pub fn run_async_fx_sim_agg(
             // Update the Fx Book with the new market data
             let mut fx_book = fx_book_mutex_fx_clone.lock().unwrap();
             if let Err(e) = fx_book.update(market_data) {
+                //print/log error and continuing processing next market data values
                 error!("market data not processed - {e}");
             } else {
-                // currently working on real-time GUI rather than print!!
+                // update GUI - send repaint request
+                rec_ctx.request_repaint();
+                // print FX book as ladder to console
                 aggregator::print_fxbook_as_ladder(&mut fx_book);
             }
-            // update GUI
-            rec_ctx.request_repaint();
         }
     });
 }
