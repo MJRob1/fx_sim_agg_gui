@@ -23,10 +23,8 @@ fn main() {
         exit(1);
     }
 
-    // let win_option = eframe::NativeOptions::default();
     let mut fx_viewer_app = FxViewerApp::default();
     let win_option = eframe::NativeOptions {
-        // viewport: egui::ViewportBuilder::default().with_inner_size(Vec2::new(510., 450.)),
         viewport: egui::ViewportBuilder::default().with_inner_size(Vec2::new(590., 350.)),
         ..Default::default()
     };

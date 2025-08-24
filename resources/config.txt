@@ -1,6 +1,6 @@
 Name, currency pair, 1M buy price, spread (pips), 3M markup (pips), 5M markip (pips), no. iterations   
-CITI, USD/EUR, 1.5552, 10, 1, 2, 1000
-BARX, USD/EUR, 1.5553, 10, 1, .2, 1000
-MS, USD/EUR, 1.5554, 11, 1, 2, 1000
-JPMC, USD/EUR, 1.5553, 11, 1, 2, 1000
-UBS, USD/EUR, 1.5552, 11, 1, 2, 1000
+CITI, USD/EUR, 1.5552, 10, 1, 2, 10
+BARX, USD/EUR, 1.5553, 10, 1, .2, 10
+MS, USD/EUR, 1.5554, 11, 1, 2, 10
+JPMC, USD/EUR, 1.5553, 11, 1, 2, 10
+UBS, USD/EUR, 1.5552, 11, 1, 2, 10
