@@ -3,7 +3,7 @@
 //! `fx_sim_agg_gui` simulates FX market data streams and aggregates them into a real-time book of buys and sells.
 //! A separate thread renders the FX updates in real-time to a GUI.
 //!
-//! - `main.rs`  Defines and initiates the UI runtime (which in turn intiates the asynchronous fx simuation and aggregation runtime). Also initiates log4rs logging framework
+//! - `main.rs`  Defines and initiates the UI runtime (which in turn intiates the asynchronous fx simulation and aggregation runtime). Also initiates log4rs logging framework
 //! - `simulator.rs` generates simulated FX market data and sends the data as asynchronous market data streams
 //! - `aggregator.rs` updates and aggregates the asynchronous data streams into a real-time FX book of buys and sells
 //! - `lib.rs` Includes the thread which combines all the individual asynchronous market data streams from each liquidity provider into a single merged stream
@@ -13,6 +13,7 @@
 mod aggregator;
 mod gui;
 mod simulator;
+mod tests;
 use eframe::egui;
 use egui::Context;
 use log::error;
@@ -112,7 +113,7 @@ impl FxViewerApp {
             // start fx thread
             let rec_ctx: Context = ctx_rx.recv().unwrap();
             run_async_fx_sim_agg(rec_ctx, writer, fx_book_mutex_fx_clone, &configs);
-        }); // end of fx thread  - mutex lock released here
+        }); // end of fx thread 
 
         if let Err(e) = ctx_tx.send(ctx) {
             error!("error sending from ctx channel - {e}");
@@ -122,7 +123,7 @@ impl FxViewerApp {
         Self {
             fx_book_mutex: fx_book_mutex_ui_clone,
         }
-    } // mutex lock released here
+    }
 }
 
 impl eframe::App for FxViewerApp {
@@ -159,7 +160,7 @@ pub fn run_async_fx_sim_agg(
             }
 
             // Update the Fx Book with the new market data
-            let mut fx_book = fx_book_mutex_fx_clone.lock().unwrap();
+            let mut fx_book = fx_book_mutex_fx_clone.lock().unwrap(); // panic if can't get lock
             if let Err(e) = fx_book.update(market_data) {
                 //print/log error and continuing processing next market data values
                 error!("market data not processed - {e}");
@@ -169,7 +170,7 @@ pub fn run_async_fx_sim_agg(
                 // print FX book as ladder to console
                 aggregator::print_fxbook_as_ladder(&mut fx_book);
             }
-        }
+        } // mutex lock released here
     });
 }
 

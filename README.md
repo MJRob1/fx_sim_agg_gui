@@ -10,7 +10,7 @@ A simplified software architecture is as shown:
 
 ![software architecture](<resources/Software Architecture.png>)
 
- - `main.rs`  Defines and initiates the UI runtime (which in turn intiates the asynchronous fx simuation and aggregation runtime). Also initiates log4rs logging framework
+ - `main.rs`  Defines and initiates the UI runtime (which in turn intiates the asynchronous fx simulation and aggregation runtime). Also initiates log4rs logging framework
  - `simulator.rs` generates simulated FX market data and sends the data as asynchronous market data streams
  - `aggregator.rs` updates and aggregates the asynchronous data streams into a real-time FX book of buys and sells
  - `lib.rs` Includes the thread which combines all the individual asynchronous market data streams from each liquidity provider into a single merged stream
